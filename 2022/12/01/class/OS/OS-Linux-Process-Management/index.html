@@ -178,13 +178,13 @@
 </ul>
 <h3 id="二、实验目的"><a href="#二、实验目的" class="headerlink" title="二、实验目的"></a>二、实验目的</h3><p>通过实验，加深理解进程控制块、进程队列等概念，了解进程管理的具体实施方法。</p>
 <h3 id="三、设计思路"><a href="#三、设计思路" class="headerlink" title="三、设计思路"></a>三、设计思路</h3><h4 id="ps"><a href="#ps" class="headerlink" title="ps"></a>ps</h4><p>ps是用于显示进程<u>瞬时信息</u>的，可以用<code>strace ps</code>查看ps的系统调用，部分输出如下</p>
-<p><img src="OS-Linux-Process-Management/trace_ps.png" alt=""></p>
+<p><img src="/project/project/2022/12/01/class/OS/OS-Linux-Process-Management/trace_ps.png" alt></p>
 <p>可以看出主要调用了”/proc/pid”、”/proc/pid/status” 这两个文件，我们查看/proc 目录：</p>
-<p><img src="OS-Linux-Process-Management/ls_proc.png" alt=""></p>
+<p><img src="/project/project/2022/12/01/class/OS/OS-Linux-Process-Management/ls_proc.png" alt></p>
 <p>可以发现，/proc 下有当前所有进程的文件,文件名即为进程的pid。因此若需要实现隐藏进程, 可以在ps读取指定进程文件时修改判断条件, 使其忽略该进程信息。</p>
 <h4 id="top"><a href="#top" class="headerlink" title="top"></a>top</h4><p>top 命令可以动态地<u>持续监听</u>进程地运行状态，我们一般使用<code>top -u seu</code>来实现对某个用户（seu）的监听。</p>
 <h4 id="用户权限"><a href="#用户权限" class="headerlink" title="用户权限"></a>用户权限</h4><p>我们通过<code>cat /etc/group</code>命令查看group文件获得所有用户的uid：</p>
-<p><img src="OS-Linux-Process-Management/uid-16698847210654.png" alt=""></p>
+<p><img src="/project/project/2022/12/01/class/OS/OS-Linux-Process-Management/uid-16698847210654.png" alt></p>
 <p>可以看到，root用户的uid为0，seu用户的uid为500。在<code>hide()</code>和<code>hide_user_processes()</code>函数开始前先对用户uid进行判断, 若非root用户则直接<br>返回.，否则执行相应的系统调用。</p>
 <h3 id="四、实验环境"><a href="#四、实验环境" class="headerlink" title="四、实验环境"></a>四、实验环境</h3><ul>
 <li><p>VMware 16</p>
@@ -211,24 +211,24 @@
 <h3 id="七、系统调用hide-实现"><a href="#七、系统调用hide-实现" class="headerlink" title="七、系统调用hide()实现"></a>七、系统调用hide()实现</h3><h4 id="文件修改"><a href="#文件修改" class="headerlink" title="文件修改"></a>文件修改</h4><ol>
 <li><p><strong>linux-2.6.21/include/linux/sched.h</strong></p>
 <p>在task_struct结构体中添加<code>int hide</code> ,指示当前进程是否被隐藏。</p>
-<p><img src="OS-Linux-Process-Management/改sched_h.png" alt=""></p>
+<p><img src="/project/project/2022/12/01/class/OS/OS-Linux-Process-Management/改sched_h.png" alt></p>
 </li>
 </ol>
 <ol>
 <li><p><strong>linux-2.6.21/kernel/fork.c</strong></p>
 <p>在<code>copy_process()</code>中初始化<code>hide</code>为<code>0</code>。当<code>hide=1</code>时进程需要被隐藏，当<code>hide=0</code>时进程不需要被隐藏。</p>
-<p><img src="OS-Linux-Process-Management/改fork_c-16698848473775.png" alt=""></p>
+<p><img src="/project/project/2022/12/01/class/OS/OS-Linux-Process-Management/改fork_c-16698848473775.png" alt></p>
 </li>
 <li><p><strong>linux-2.6.21/fs/proc/base.c</strong></p>
 <ul>
 <li><p>为筛选出需要被隐藏的进程，阻止系统返回信息，在<code>proc_pid_readdir()</code>添加判断条件</p>
-<p><img src="OS-Linux-Process-Management/改base_c_proc_pid_readdir.png" alt=""></p>
+<p><img src="/project/project/2022/12/01/class/OS/OS-Linux-Process-Management/改base_c_proc_pid_readdir.png" alt></p>
 </li>
 </ul>
 <p>​        即只有那些不需要隐藏的进程才能执行下面的代码, 被系统放入缓存。</p>
 <ul>
 <li><p>为阻止系统对隐藏进程的路径名的解析,在<code>proc_pid_lookup（）</code>函数中添加如下代码:</p>
-<p><img src="OS-Linux-Process-Management/改base_c_proc_pid_lookup.png" alt=""></p>
+<p><img src="/project/project/2022/12/01/class/OS/OS-Linux-Process-Management/改base_c_proc_pid_lookup.png" alt></p>
 </li>
 </ul>
 </li>
@@ -279,16 +279,16 @@
 </ol>
 <ul>
 <li><p>​    在终端查看目前用户为seu的进程</p>
-<p><img src="OS-Linux-Process-Management/初始.png" alt=""></p>
+<p><img src="/project/project/2022/12/01/class/OS/OS-Linux-Process-Management/初始.png" alt></p>
 </li>
 <li><p>选择进程3912，在测试文件中修改<code>pid = 3912,on = 1</code>,编译后在普通用户下运行，可以看见，在top后该进程依然被显示出来。</p>
-<p><img src="OS-Linux-Process-Management/普通用户.png" alt=""></p>
+<p><img src="/project/project/2022/12/01/class/OS/OS-Linux-Process-Management/普通用户.png" alt></p>
 </li>
 <li><p>进入root用户，重新执行测试文件，可以看见，进程3912被隐藏</p>
-<p><img src="OS-Linux-Process-Management/root被隐藏.png" alt=""></p>
+<p><img src="/project/project/2022/12/01/class/OS/OS-Linux-Process-Management/root被隐藏.png" alt></p>
 </li>
 <li><p>修改<code>on = 0</code>,编译后在root下运行，可以看见进程3912又被显示出来</p>
-<p><img src="OS-Linux-Process-Management/root修改on=1后又显示.png" alt=""></p>
+<p><img src="/project/project/2022/12/01/class/OS/OS-Linux-Process-Management/root修改on=1后又显示.png" alt></p>
 </li>
 </ul>
 <p>hide()系统调用测试通过。</p>
@@ -305,7 +305,7 @@
 </ol>
 <ul>
 <li><p>在终端查看目前用户为seu的进程</p>
-<p><img src="OS-Linux-Process-Management/初始-16698881610146.png" alt=""></p>
+<p><img src="/project/project/2022/12/01/class/OS/OS-Linux-Process-Management/初始-16698881610146.png" alt></p>
 </li>
 <li><p>修改测试文件参数<code>uid = 500</code>（seu用户），<code>binname = NULL , recover = 0</code></p>
 </li>
@@ -313,13 +313,13 @@
 <p>在普通用户下编译并执行程序，seu用户的进程未被隐藏，此处不再过多展示</p>
 <ul>
 <li><p>进入root用户执行程序，seu用户的进程被隐藏</p>
-<p><img src="OS-Linux-Process-Management/root隐藏进程.png" alt=""></p>
+<p><img src="/project/project/2022/12/01/class/OS/OS-Linux-Process-Management/root隐藏进程.png" alt></p>
 </li>
 <li><p>修改recover=1之后，seu用户进程重新被显示出来</p>
-<p><img src="OS-Linux-Process-Management/recover=1后重新显示.png" alt=""></p>
+<p><img src="/project/project/2022/12/01/class/OS/OS-Linux-Process-Management/recover=1后重新显示.png" alt></p>
 </li>
 <li><p>我们选择PID=4006的进程，修改测试文件参数<code>binname = &quot;dbus-launch&quot;</code> , <code>recover = 0</code>，重新编译运行代码，可以看见，进程4006被隐藏</p>
-<p><img src="OS-Linux-Process-Management/隐藏4006.png" alt=""></p>
+<p><img src="/project/project/2022/12/01/class/OS/OS-Linux-Process-Management/隐藏4006.png" alt></p>
 </li>
 </ul>
 <p>hide_user_processes()系统调用测试通过。</p>

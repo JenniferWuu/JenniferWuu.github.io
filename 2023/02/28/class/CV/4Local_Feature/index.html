@@ -183,7 +183,7 @@ E(u,v)=\sum_{x,y}w(x,y)[I(x+u,y+v)-I(x,y)]^2</script><p><code>(u,v)</code>是平
 <p>利用<strong>二阶泰勒展开</strong>：</p>
 <script type="math/tex; mode=display">
 E(u,v)\approx \begin{bmatrix}u&v\end{bmatrix}M\begin{bmatrix}u\\v\end{bmatrix}\\
-M=\sum_{x,y}w(x,y)\begin{bmatrix}I^2_x&I_xI_y\\I_xI_y&I^2_y\end{bmatrix}=\begin{bmatrix}\lambda_1&0\\0&\lambda_2\end{bmatrix}</script><p><img src="4Local_Feature/OIP-C.Lqo5YgVAWmjS7SezNOhFlAHaHb" alt="角点检测_Touch_Dream的博客-CSDN博客"></p>
+M=\sum_{x,y}w(x,y)\begin{bmatrix}I^2_x&I_xI_y\\I_xI_y&I^2_y\end{bmatrix}=\begin{bmatrix}\lambda_1&0\\0&\lambda_2\end{bmatrix}</script><p><img src="/project/project/2023/02/28/class/CV/4Local_Feature/OIP-C.Lqo5YgVAWmjS7SezNOhFlAHaHb" alt="角点检测_Touch_Dream的博客-CSDN博客"></p>
 <script type="math/tex; mode=display">
 R=det(M)-\alpha trace(M)^2=\lambda_1\lambda_2-\alpha (\lambda_1+\lambda_2)^2\\
 \alpha \in[0.04,0.06]\ constant</script><h3 id="Harris-detector"><a href="#Harris-detector" class="headerlink" title="Harris detector"></a>Harris detector</h3><ol>
@@ -201,15 +201,15 @@ R=det(M)-\alpha trace(M)^2=\lambda_1\lambda_2-\alpha (\lambda_1+\lambda_2)^2\\
 </li>
 </ul>
 <h3 id="Scale-Invariant-Detection"><a href="#Scale-Invariant-Detection" class="headerlink" title="Scale Invariant Detection"></a>Scale Invariant Detection</h3><p>有一个关于尺度的单峰函数，在尺度最合适时函数取得最大值。</p>
-<p><img src="4Local_Feature/image-20230228234509182.png" alt="image-20230228234509182"></p>
+<p><img src="/project/project/2023/02/28/class/CV/4Local_Feature/image-20230228234509182.png" alt="image-20230228234509182"></p>
 <h3 id="Blob-detection"><a href="#Blob-detection" class="headerlink" title="Blob detection"></a>Blob detection</h3><p>Edge = ripple</p>
 <p>Blob = 两个ripples的叠加</p>
-<p><img src="4Local_Feature/image-20230228235105887.png" alt="image-20230228235105887"></p>
+<p><img src="/project/project/2023/02/28/class/CV/4Local_Feature/image-20230228235105887.png" alt="image-20230228235105887"></p>
 <p>当唯一极大值出现时，对应的scale就是最合适的。我们希望通过将图像与拉普拉斯算子在几个尺度上卷积并寻找最大相应。</p>
 <ul>
 <li>然而，随着σ的增大，拉普拉斯响应变弱，这会造成边界信息的大量丢失，因此，需要normalization。</li>
 </ul>
-<p><img src="4Local_Feature/image-20230301001259503.png" alt="image-20230301001259503"></p>
+<p><img src="/project/project/2023/02/28/class/CV/4Local_Feature/image-20230301001259503.png" alt="image-20230301001259503"></p>
 <p>用σ乘高斯导数，用σ^2乘高斯二阶导。</p>
 <p>2D:</p>
 <script type="math/tex; mode=display">
