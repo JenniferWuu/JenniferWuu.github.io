@@ -1,0 +1,390 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Pre-trained Model | JenniferWu'Blog</title><meta name="author" content="JenniferWu"><meta name="copyright" content="JenniferWu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="PTMs两大范式1.浅层次嵌入（Non-Contextual Embeddings）     词嵌入 训练目标 预料范围 特点     NNLM 语言模型 局部语料 基于语言模型训练，词嵌入只是NNLM的一个产物   Word2Vec 非语言模型（窗口上下文） 局部语料 采用分层SoftMax和负采样，损失函数为带权重的交叉熵   Glove 非语言模型（词共现矩阵） 全局语料 全局语料构建词共现">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Pre-trained Model">
+<meta property="og:url" content="https://jenniferwuu.github.io/project/2022/10/28/class/NLP/pre-trained-Model/index.html">
+<meta property="og:site_name" content="JenniferWu&#39;Blog">
+<meta property="og:description" content="PTMs两大范式1.浅层次嵌入（Non-Contextual Embeddings）     词嵌入 训练目标 预料范围 特点     NNLM 语言模型 局部语料 基于语言模型训练，词嵌入只是NNLM的一个产物   Word2Vec 非语言模型（窗口上下文） 局部语料 采用分层SoftMax和负采样，损失函数为带权重的交叉熵   Glove 非语言模型（词共现矩阵） 全局语料 全局语料构建词共现">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://jenniferwuu.github.io/project/img/wwj.jpg">
+<meta property="article:published_time" content="2022-10-28T06:46:24.000Z">
+<meta property="article:modified_time" content="2023-03-17T14:31:18.815Z">
+<meta property="article:author" content="JenniferWu">
+<meta property="article:tag" content="NLP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://jenniferwuu.github.io/project/img/wwj.jpg"><link rel="shortcut icon" href="/project/img/star.png"><link rel="canonical" href="https://jenniferwuu.github.io/project/2022/10/28/class/NLP/pre-trained-Model/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/project/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/project/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: true,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Pre-trained Model',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: undefined,
+  isToc: true,
+  postUpdate: '2023-03-17 22:31:18'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/project/img/wwj.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/project/archives/"><div class="headline">Articles</div><div class="length-num">17</div></a><a href="/project/tags/"><div class="headline">Tags</div><div class="length-num">5</div></a><a href="/project/categories/"><div class="headline">Categories</div><div class="length-num">2</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/project/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/project/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/project/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/project/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/project/img/default_top_img.JPG')"><nav id="nav"><span id="blog-info"><a href="/project/" title="JenniferWu'Blog"><span class="site-name">JenniferWu'Blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/project/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/project/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/project/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/project/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Pre-trained Model</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2022-10-28T06:46:24.000Z" title="Created 2022-10-28 14:46:24">2022-10-28</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2023-03-17T14:31:18.815Z" title="Updated 2023-03-17 22:31:18">2023-03-17</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Pre-trained Model"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="PTMs两大范式"><a href="#PTMs两大范式" class="headerlink" title="PTMs两大范式"></a>PTMs两大范式</h2><p>1.浅层次嵌入（Non-Contextual Embeddings）</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>词嵌入</th>
+<th>训练目标</th>
+<th>预料范围</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NNLM</td>
+<td>语言模型</td>
+<td>局部语料</td>
+<td>基于语言模型训练，词嵌入只是NNLM的一个产物</td>
+</tr>
+<tr>
+<td>Word2Vec</td>
+<td>非语言模型（窗口上下文）</td>
+<td>局部语料</td>
+<td>采用分层SoftMax和负采样，损失函数为带权重的交叉熵</td>
+</tr>
+<tr>
+<td>Glove</td>
+<td>非语言模型（词共现矩阵）</td>
+<td>全局语料</td>
+<td>全局语料构建词共现矩阵后进行高效矩阵分解算法</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>2.预训练编码器（Contextual Embeddings) （解决一词多义）</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>编码器</th>
+<th>PTMs代表</th>
+<th>计算方式</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MLP(MultiLayerPerceptron)</td>
+<td>NNLM/Word2Vec</td>
+<td>前馈+并行</td>
+<td>不考虑位置信息</td>
+</tr>
+<tr>
+<td>CNNs</td>
+<td></td>
+<td>前馈+并行</td>
+<td>考虑位置信息 n-gram局部上下文编码</td>
+</tr>
+<tr>
+<td>RNN→LSTM</td>
+<td>ELMo</td>
+<td>循环+串行</td>
+<td>天然适合处理位置信息，但BPTT会导致梯度消失</td>
+</tr>
+<tr>
+<td>Transformer(Encoder)</td>
+<td>BERT</td>
+<td>前馈+并行</td>
+<td>self-attention 解决长距离依赖，无位置偏差</td>
+</tr>
+<tr>
+<td>Transformer(Decoder)</td>
+<td>GPT-1、GPT-2</td>
+<td>前馈+并行</td>
+<td></td>
+</tr>
+<tr>
+<td>Transformer-XL</td>
+<td>XLNet</td>
+<td>循环+串行</td>
+<td>基于transformer引入相对位置编码</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="Recurrent-NN"><a href="#Recurrent-NN" class="headerlink" title="Recurrent NN"></a>Recurrent NN</h2><p><img src="pre-trained-Model/RNN.png" alt="(RNN)"></p>
+<p>limitation：Vanishing gradient problem</p>
+<h2 id="Long-Short-Term-Memory"><a href="#Long-Short-Term-Memory" class="headerlink" title="Long Short Term Memory"></a>Long Short Term Memory</h2><p><img src="pre-trained-Model/LSTM.png" alt="LSTM"></p>
+<p>上侧箭头变化慢，下侧箭头变化快，保证梯度不会消失。</p>
+<h2 id="Embedding-from-Language-Model-ELMo"><a href="#Embedding-from-Language-Model-ELMo" class="headerlink" title="Embedding from Language Model (ELMo)"></a>Embedding from Language Model (ELMo)</h2><blockquote>
+<p> RNN-based language model</p>
+</blockquote>
+<p>​    training of ELMo: Next Word Prediction</p>
+<ul>
+<li>contextualized word embedding</li>
+<li>each word token has its own embedding</li>
+</ul>
+<p><img src="pre-trained-Model/ELMo.png" alt="ELMo"></p>
+<ol>
+<li><p>同一个单词上下文不同embedding可能不同（一词多义）</p>
+</li>
+<li><p>有从前到后和从后到前两种embedding，都要</p>
+</li>
+<li><p>有不同层的embedding， 都要，再给比例（不同实验比例不同）</p>
+</li>
+</ol>
+<h2 id="Bidirectional-Encoder-Represtations-from-Transformer-（BERT"><a href="#Bidirectional-Encoder-Represtations-from-Transformer-（BERT" class="headerlink" title="Bidirectional Encoder Represtations from Transformer （BERT)"></a>Bidirectional Encoder Represtations from Transformer （BERT)</h2><blockquote>
+<p>encoder of transformer</p>
+</blockquote>
+<ul>
+<li>bidirectional 双向！</li>
+</ul>
+<h4 id="Training-of-BERT"><a href="#Training-of-BERT" class="headerlink" title="Training of BERT"></a>Training of BERT</h4><ul>
+<li><p>Approach 1: Masked LM （MLM)</p>
+<p>盖掉句子中的一些单词,预测被改掉的单词是哪个</p>
+<p>如果两个词汇填在同一个地方没有违和感，那么他们可能意思相似，拥有相似的Embedding</p>
+</li>
+</ul>
+<ul>
+<li><p>Approach 2: Next Sentence Prediction</p>
+<p>判断两个句子是否应该被接在一起</p>
+<blockquote>
+<p>[SEP] : the boundary of two sentences</p>
+<p>[CLS] : the position that outputs classification results (一般在开头)</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="How-to-use-BERT"><a href="#How-to-use-BERT" class="headerlink" title="How to use BERT"></a>How to use BERT</h4><p><strong><em>根据特定 case对模型进行 fine tuning</em></strong></p>
+<ul>
+<li><p>case1: input 句子，output 分类（文本分类,情感分类）</p>
+<p>​            经过BERT（fine-tuned)后, [CLS]的输出再来Linear Classifier。</p>
+</li>
+<li><p>case2: input 句子，output 每个单词的分类</p>
+</li>
+<li><p>case3: input 句子*2， output 分类 (根据前提，判断假设是否正确)</p>
+</li>
+<li><p>case4: Extraction-based Question Answering（给一篇文章，问他一些问题，问题中的词汇要在文章中出现过）</p>
+</li>
+</ul>
+<p><em>延申：Enhanced Representation through Knowledge Integration (ERNIE)</em></p>
+<p>&emsp;&emsp; <em>因为中文中盖掉一些字很容易猜出来，因此我们盖掉一些词汇。</em></p>
+<h2 id="Genrative-Pre-Training-GPT"><a href="#Genrative-Pre-Training-GPT" class="headerlink" title="Genrative Pre-Training (GPT)"></a>Genrative Pre-Training (GPT)</h2><blockquote>
+<p>decoder of transformer</p>
+</blockquote>
+<p>非常非常的巨大，很神奇。</p>
+<h2 id="根据下游任务的模型修改"><a href="#根据下游任务的模型修改" class="headerlink" title="根据下游任务的模型修改"></a>根据下游任务的模型修改</h2><h3 id="fine-tuning"><a href="#fine-tuning" class="headerlink" title="fine-tuning"></a>fine-tuning</h3><p>预训练语言模型“迁就“各种下游任务。具体体现就是通过引入各种辅助任务loss，将其添加到预训练模型中，然后继续pre-training，以便让其更加适配下游任务，这个过程中，预训练语言模型做出了更多的牺牲。</p>
+<h3 id="delta-tuning"><a href="#delta-tuning" class="headerlink" title="delta-tuning"></a>delta-tuning</h3><p>仅微调模型参数的一小部分，或是增加一组参数，而其余部分保持不变。</p>
+<ul>
+<li><p>prefix-tuning</p>
+<p>提出任务特定的trainable前缀prefix，这样直接为不同任务保存不同的前缀即可。只需要不同任务设置不同的Prefix即可，因此实现上只需要存储一个大型transformer模型和多个学习的任务特定的prefix参数。</p>
+</li>
+<li><p>prompt-tuning</p>
+<p>将人为的规则给到预训练模型，使模型可以更好地理解人的指令的一项技术，以便更好地利用预训练模型。例如，在文本情感分类任务中，输入为”I love this movie.”，希望输出的是”positive/negative”中的一个标签。那么可以设置一个Prompt，形如：“The movie is <em>_</em>”，然后让模型用来表示情感状态的答案（label），如positive/negative，甚至更细粒度一些的“fantastic”、“boring”等，将空补全作为输出。</p>
+</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="https://jenniferwuu.github.io/project">JenniferWu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://jenniferwuu.github.io/project/2022/10/28/class/NLP/pre-trained-Model/">https://jenniferwuu.github.io/project/2022/10/28/class/NLP/pre-trained-Model/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/project/tags/NLP/">NLP</a></div><div class="post_share"><div class="social-share" data-image="/project/img/wwj.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/project/2022/10/28/class/SRTP/Grasshopper/" title="Grasshopper"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">Grasshopper</div></div></a></div><div class="next-post pull-right"><a href="/project/2022/11/01/class/NLP/Part-of-speech-Tagging/" title="Part-of-speech Tagging"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">Part-of-speech Tagging</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><div><a href="/project/2022/11/01/class/NLP/Part-of-speech-Tagging/" title="Part-of-speech Tagging"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-11-01</div><div class="title">Part-of-speech Tagging</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/project/img/wwj.jpg" onerror="this.onerror=null;this.src='/project/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">JenniferWu</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/project/archives/"><div class="headline">Articles</div><div class="length-num">17</div></a><a href="/project/tags/"><div class="headline">Tags</div><div class="length-num">5</div></a><a href="/project/categories/"><div class="headline">Categories</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/JenniferWuu" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:dndxwwj@outlook.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">Welcome!</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#PTMs%E4%B8%A4%E5%A4%A7%E8%8C%83%E5%BC%8F"><span class="toc-number">1.</span> <span class="toc-text">PTMs两大范式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Recurrent-NN"><span class="toc-number">2.</span> <span class="toc-text">Recurrent NN</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Long-Short-Term-Memory"><span class="toc-number">3.</span> <span class="toc-text">Long Short Term Memory</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Embedding-from-Language-Model-ELMo"><span class="toc-number">4.</span> <span class="toc-text">Embedding from Language Model (ELMo)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Bidirectional-Encoder-Represtations-from-Transformer-%EF%BC%88BERT"><span class="toc-number">5.</span> <span class="toc-text">Bidirectional Encoder Represtations from Transformer （BERT)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Training-of-BERT"><span class="toc-number">5.0.1.</span> <span class="toc-text">Training of BERT</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#How-to-use-BERT"><span class="toc-number">5.0.2.</span> <span class="toc-text">How to use BERT</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Genrative-Pre-Training-GPT"><span class="toc-number">6.</span> <span class="toc-text">Genrative Pre-Training (GPT)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%B9%E6%8D%AE%E4%B8%8B%E6%B8%B8%E4%BB%BB%E5%8A%A1%E7%9A%84%E6%A8%A1%E5%9E%8B%E4%BF%AE%E6%94%B9"><span class="toc-number">7.</span> <span class="toc-text">根据下游任务的模型修改</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#fine-tuning"><span class="toc-number">7.1.</span> <span class="toc-text">fine-tuning</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#delta-tuning"><span class="toc-number">7.2.</span> <span class="toc-text">delta-tuning</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/project/2023/08/05/internship/Anaconda%E9%85%8D%E7%BD%AE/" title="Anaconda配置">Anaconda配置</a><time datetime="2023-08-05T12:53:56.000Z" title="Created 2023-08-05 20:53:56">2023-08-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/project/2023/02/28/class/CV/4Local_Feature/" title="Computer Vision|Local Feature">Computer Vision|Local Feature</a><time datetime="2023-02-28T09:53:34.000Z" title="Created 2023-02-28 17:53:34">2023-02-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/project/2023/02/26/class/CV/3Edge_dection/" title="Computer Vision|Edge detection">Computer Vision|Edge detection</a><time datetime="2023-02-26T09:14:40.000Z" title="Created 2023-02-26 17:14:40">2023-02-26</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/project/2023/02/25/class/CV/2Image_filtering/" title="Computer Vision|Image filtering">Computer Vision|Image filtering</a><time datetime="2023-02-25T12:45:46.000Z" title="Created 2023-02-25 20:45:46">2023-02-25</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/project/2023/02/25/class/CV/1Introduction/" title="Computer Vision|Introduction">Computer Vision|Introduction</a><time datetime="2023-02-25T08:17:23.000Z" title="Created 2023-02-25 16:17:23">2023-02-25</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2021 - 2023 By JenniferWu</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/project/js/utils.js"></script><script src="/project/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, '']
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script><script>(() => {
+  const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaid.length === 0) return
+  const runMermaid = () => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+    Array.from($mermaid).forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+      const mermaidID = 'mermaid-' + index
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+
+      const renderV10 = () => {
+        renderFn.then(({svg}) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svg)
+        })
+      }
+
+      const renderV9 = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      typeof renderFn === 'string' ? renderV9(renderFn) : renderV10()
+    })
+  }
+
+  const loadMermaid = () => {
+    window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+  }
+
+  btf.addModeChange('mermaid', runMermaid)
+
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
