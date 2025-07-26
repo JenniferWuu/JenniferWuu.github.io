@@ -1,0 +1,397 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Machine Learning | JenniferWu'Blog</title><meta name="author" content="JenniferWu"><meta name="copyright" content="JenniferWu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="对比 Categorical vs. Multinominal    对比点 Categorical 分布 Multinomial 分布     抽样单位 抽一次，得到一个类别 抽多次，得到每类出现的次数   是谁的特例？ 是 Multinomial 的特例（n&#x3D;1） 是更广义的分布   应用 单标签分类、one-hot 文本计数、生成模型、多次采样     1234567891011121314">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Machine Learning">
+<meta property="og:url" content="https://jenniferwuu.github.io/2025/07/26/knowledge/Machine_Learning/index.html">
+<meta property="og:site_name" content="JenniferWu&#39;Blog">
+<meta property="og:description" content="对比 Categorical vs. Multinominal    对比点 Categorical 分布 Multinomial 分布     抽样单位 抽一次，得到一个类别 抽多次，得到每类出现的次数   是谁的特例？ 是 Multinomial 的特例（n&#x3D;1） 是更广义的分布   应用 单标签分类、one-hot 文本计数、生成模型、多次采样     1234567891011121314">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://jenniferwuu.github.io/img/wwj.jpg">
+<meta property="article:published_time" content="2025-07-26T02:37:21.000Z">
+<meta property="article:modified_time" content="2025-07-26T02:38:07.057Z">
+<meta property="article:author" content="JenniferWu">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://jenniferwuu.github.io/img/wwj.jpg"><link rel="shortcut icon" href="/img/star.png"><link rel="canonical" href="https://jenniferwuu.github.io/2025/07/26/knowledge/Machine_Learning/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: true,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Machine Learning',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: undefined,
+  isToc: true,
+  postUpdate: '2025-07-26 10:38:07'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/wwj.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">22</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">6</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">6</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/default_top_img.JPG')"><nav id="nav"><span id="blog-info"><a href="/" title="JenniferWu'Blog"><span class="site-name">JenniferWu'Blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Machine Learning</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2025-07-26T02:37:21.000Z" title="Created 2025-07-26 10:37:21">2025-07-26</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2025-07-26T02:38:07.057Z" title="Updated 2025-07-26 10:38:07">2025-07-26</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Machine Learning"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="对比-Categorical-vs-Multinominal"><a href="#对比-Categorical-vs-Multinominal" class="headerlink" title="对比 Categorical vs. Multinominal"></a>对比 Categorical vs. Multinominal</h1><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>对比点</th>
+<th>Categorical 分布</th>
+<th>Multinomial 分布</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>抽样单位</td>
+<td>抽一次，得到一个类别</td>
+<td>抽多次，得到每类出现的次数</td>
+</tr>
+<tr>
+<td>是谁的特例？</td>
+<td>是 Multinomial 的特例（n=1）</td>
+<td>是更广义的分布</td>
+</tr>
+<tr>
+<td>应用</td>
+<td>单标签分类、one-hot</td>
+<td>文本计数、生成模型、多次采样</td>
+</tr>
+</tbody>
+</table>
+</div>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> torch.distributions <span class="keyword">import</span> Categorical, Multinomial</span><br><span class="line"></span><br><span class="line">p = torch.tensor([<span class="number">0.2</span>, <span class="number">0.5</span>, <span class="number">0.3</span>])  <span class="comment"># 类别 A、B、C 的概率</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Categorical：一次只采样一个类别</span></span><br><span class="line">cat = Categorical(probs=p)</span><br><span class="line"><span class="comment"># 采样一次</span></span><br><span class="line">cat.sample()  <span class="comment"># 可能输出 tensor(2)</span></span><br><span class="line"><span class="comment"># 多次采样，得到多个标签</span></span><br><span class="line">cat.sample((<span class="number">10</span>,)) <span class="comment"># 可能输出 tensor([1, 1, 2, 0, 2, 2, 2, 0, 0, 1])</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Multinomial：采样10次，统计每个类别出现几次</span></span><br><span class="line">multi = Multinomial(total_count=<span class="number">10</span>, probs=p)</span><br><span class="line">multi.sample()  <span class="comment"># 可能输出 tensor([0., 3., 7.])</span></span><br></pre></td></tr></table></figure>
+<h1 id="Few-Shot-learning"><a href="#Few-Shot-learning" class="headerlink" title="Few-Shot-learning"></a>Few-Shot-learning</h1><p>任务描述：我现在有一个小样本识别的任务：通过gelsight感知6种条状物体（三个文具（铅笔pencil，中性笔gel_pen，走珠笔roller_pen）三个工具（小螺丝刀small_screwdriver，大螺丝刀big_screwdriver，扎带cable_tie）），输入是物体接触gelsight得到的图片，输出物体类别。每类的训练数据约为50张，希望易于扩展新类别。请在以下方法中为我选择，并说明理由</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>底层机制</th>
+<th>是否可学习距离</th>
+<th>优势</th>
+<th>劣势</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Prototypical Networks</td>
+<td>类中心均值</td>
+<td>否</td>
+<td>简单高效</td>
+<td>类内差异不适配</td>
+</tr>
+<tr>
+<td>Relation Networks</td>
+<td>学习相似度函数</td>
+<td>是</td>
+<td>灵活泛化强</td>
+<td>模型复杂</td>
+</tr>
+<tr>
+<td>Matching Networks</td>
+<td>注意力+最近邻</td>
+<td>否</td>
+<td>可建模上下文</td>
+<td>对顺序敏感</td>
+</tr>
+<tr>
+<td>Contrastive Learning</td>
+<td>特征拉近推远</td>
+<td>否</td>
+<td>适合无监督</td>
+<td>需要大量负样本，训练技巧敏感</td>
+</tr>
+<tr>
+<td>MAML</td>
+<td>参数初始化优化</td>
+<td>无需特定结构</td>
+<td>快速适应新任务</td>
+<td>优化不稳定</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="Metric-based"><a href="#Metric-based" class="headerlink" title="Metric-based"></a>Metric-based</h2><h3 id="Prototypical-Networks"><a href="#Prototypical-Networks" class="headerlink" title="Prototypical Networks"></a>Prototypical Networks</h3><p><strong>核心思想</strong>：每类样本通过其支持集（support set）的特征均值生成一个“原型”，然后对查询样本（query）进行最近邻分类。</p>
+<ul>
+<li><p><strong>过程</strong>：</p>
+<ul>
+<li><p>将每类的支持样本嵌入到特征空间。</p>
+</li>
+<li><p>对每一类计算原型向量（类中心）：</p>
+<script type="math/tex; mode=display">
+\mathbf{c}_k = \frac{1}{|S_k|} \sum_{\mathbf{x}_i \in S_k} f_\theta(\mathbf{x}_i)</script></li>
+<li><p>查询样本通过与各类原型的欧氏距离决定其类别：</p>
+<script type="math/tex; mode=display">
+p(y=k|\mathbf{x}) \propto \exp(-d(f_\theta(\mathbf{x}), \mathbf{c}_k))</script></li>
+</ul>
+</li>
+<li><p><strong>优点</strong>：简单高效，计算代价低。</p>
+</li>
+<li><p><strong>缺点</strong>：假设每类数据可用一个原型表示，不适合类内差异大的情况。</p>
+</li>
+</ul>
+<h3 id="Relation-Networks"><a href="#Relation-Networks" class="headerlink" title="Relation Networks"></a>Relation Networks</h3><p><strong>核心思想</strong>：通过一个可学习的“关系模块”来度量支持样本与查询样本之间的相似度。</p>
+<ul>
+<li><strong>结构</strong>：<ul>
+<li>用一个共享的编码器提取支持样本和查询样本的特征。</li>
+<li>构造特征对（support-query pairs）并输入一个关系网络（通常是小型CNN）进行关系打分。</li>
+<li>学习输出一个[0,1]之间的关系分数，表示是否为同一类。</li>
+</ul>
+</li>
+<li><strong>优点</strong>：关系度量是可学习的，比固定距离函数更灵活。</li>
+<li><strong>缺点</strong>：训练和推理计算量较大。</li>
+</ul>
+<h3 id="Matching-Network-metric-learning"><a href="#Matching-Network-metric-learning" class="headerlink" title="Matching Network (metric learning )"></a>Matching Network (metric learning )</h3><p><strong>核心思想</strong>：基于注意力机制的最近邻分类方法。结合支持集和查询样本的相似度来预测类别标签。</p>
+<ul>
+<li><p><strong>关键机制</strong>：</p>
+<ul>
+<li><p>使用带注意力的KNN：对于查询样本，按注意力权重计算其与支持样本的相似性加权结果：</p>
+<script type="math/tex; mode=display">
+\hat{y} = \sum_i a(\mathbf{x}, \mathbf{x}_i) y_i</script></li>
+<li><p>相似度函数一般使用余弦相似度或欧氏距离。</p>
+</li>
+<li><p>使用BiLSTM等对支持集建模上下文信息。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>优点</strong>：建模支持集上下文，适合变结构任务。</p>
+</li>
+<li><p><strong>缺点</strong>：训练较复杂，对支持集顺序敏感。</p>
+</li>
+</ul>
+<h3 id="Contrastive-Learning"><a href="#Contrastive-Learning" class="headerlink" title="Contrastive Learning"></a>Contrastive Learning</h3><p><strong>核心思想</strong>：通过构造正负样本对，使模型在特征空间中将相似样本拉近、不同样本推远。</p>
+<ul>
+<li><p><strong>方法流程</strong>：</p>
+<ul>
+<li><p>给定一对正样本（同类）和一对负样本（异类）。</p>
+</li>
+<li><p>训练模型学习一个嵌入空间，使得：</p>
+<script type="math/tex; mode=display">
+d(f(x_i), f(x_j^+)) \ll d(f(x_i), f(x_k^-))</script></li>
+<li><p>常用损失函数包括对比损失（Contrastive Loss）、InfoNCE、Triplet Loss等。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>优点</strong>：无需大量标签，适合自监督+小样本联合训练。</p>
+</li>
+<li><p><strong>缺点</strong>：对样本对的选择敏感，训练时间长。</p>
+</li>
+</ul>
+<h2 id="Optimization-based"><a href="#Optimization-based" class="headerlink" title="Optimization-based"></a>Optimization-based</h2><h3 id="MAML-Model-Agnostic-Meta-Learning"><a href="#MAML-Model-Agnostic-Meta-Learning" class="headerlink" title="MAML (Model-Agnostic Meta-Learning)"></a>MAML (Model-Agnostic Meta-Learning)</h3><p><strong>核心思想</strong>：学习一个通用初始化参数，使得模型可以在少量梯度更新后快速适应新任务。</p>
+<ul>
+<li><p><strong>流程</strong>：</p>
+<ol>
+<li>内循环：在任务的支持集上进行1-5步梯度下降，得出任务特定参数。</li>
+<li>外循环：在任务的查询集上计算损失，回传以更新通用初始化参数。</li>
+</ol>
+</li>
+<li><p><strong>数学形式</strong>：</p>
+<script type="math/tex; mode=display">
+\theta \leftarrow \theta - \beta \nabla_\theta \sum_{T_i \sim p(T)} \mathcal{L}_{T_i}(\theta - \alpha \nabla_\theta \mathcal{L}_{T_i}^{\text{support}}(\theta))</script></li>
+<li><p><strong>优点</strong>：适用于各种模型结构，不限制任务形式。</p>
+</li>
+<li><p><strong>缺点</strong>：对梯度敏感，优化不稳定，训练代价高。</p>
+</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="https://jenniferwuu.github.io">JenniferWu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://jenniferwuu.github.io/2025/07/26/knowledge/Machine_Learning/">https://jenniferwuu.github.io/2025/07/26/knowledge/Machine_Learning/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="/img/wwj.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/2025/07/26/code/useGIT/" title="将本地代码上传至Github"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">将本地代码上传至Github</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/wwj.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">JenniferWu</div><div class="author-info__description">松花酿酒，春水煎茶</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">22</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">6</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">6</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/JenniferWuu" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:dndxwwj@outlook.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AF%B9%E6%AF%94-Categorical-vs-Multinominal"><span class="toc-number">1.</span> <span class="toc-text">对比 Categorical vs. Multinominal</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Few-Shot-learning"><span class="toc-number">2.</span> <span class="toc-text">Few-Shot-learning</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Metric-based"><span class="toc-number">2.1.</span> <span class="toc-text">Metric-based</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Prototypical-Networks"><span class="toc-number">2.1.1.</span> <span class="toc-text">Prototypical Networks</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Relation-Networks"><span class="toc-number">2.1.2.</span> <span class="toc-text">Relation Networks</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Matching-Network-metric-learning"><span class="toc-number">2.1.3.</span> <span class="toc-text">Matching Network (metric learning )</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Contrastive-Learning"><span class="toc-number">2.1.4.</span> <span class="toc-text">Contrastive Learning</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Optimization-based"><span class="toc-number">2.2.</span> <span class="toc-text">Optimization-based</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#MAML-Model-Agnostic-Meta-Learning"><span class="toc-number">2.2.1.</span> <span class="toc-text">MAML (Model-Agnostic Meta-Learning)</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/07/26/knowledge/Machine_Learning/" title="Machine Learning">Machine Learning</a><time datetime="2025-07-26T02:37:21.000Z" title="Created 2025-07-26 10:37:21">2025-07-26</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/07/26/code/useGIT/" title="将本地代码上传至Github">将本地代码上传至Github</a><time datetime="2025-07-26T02:28:18.000Z" title="Created 2025-07-26 10:28:18">2025-07-26</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/07/26/knowledge/transformer/" title="Transformer">Transformer</a><time datetime="2025-07-26T01:56:52.000Z" title="Created 2025-07-26 09:56:52">2025-07-26</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/07/03/class/ComputerVision/" title="Computer Vision">Computer Vision</a><time datetime="2025-07-03T15:31:47.000Z" title="Created 2025-07-03 23:31:47">2025-07-03</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/07/02/code/Windows%E7%B3%BB%E7%BB%9F%E6%B7%BB%E5%8A%A0Ubuntu20-04/" title="Windows系统添加Ubuntu20.04">Windows系统添加Ubuntu20.04</a><time datetime="2025-07-02T15:24:31.000Z" title="Created 2025-07-02 23:24:31">2025-07-02</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2025 By JenniferWu</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, '']
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script><script>(() => {
+  const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaid.length === 0) return
+  const runMermaid = () => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+    Array.from($mermaid).forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+      const mermaidID = 'mermaid-' + index
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+
+      const renderV10 = () => {
+        renderFn.then(({svg}) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svg)
+        })
+      }
+
+      const renderV9 = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      typeof renderFn === 'string' ? renderV9(renderFn) : renderV10()
+    })
+  }
+
+  const loadMermaid = () => {
+    window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+  }
+
+  btf.addModeChange('mermaid', runMermaid)
+
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
