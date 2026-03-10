@@ -1,0 +1,357 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Server连接与性能查看 | JenniferWu'Blog</title><meta name="author" content="JenniferWu"><meta name="copyright" content="JenniferWu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="什么是服务器？一直开着、性能更强、专门用来存储数据或运行服务，并通过网络响应其他电脑（客户端）请求的计算机（有 CPU、内存、硬盘和操作系统）。 连接服务器 命令行ssh连接：ssh 用户名@IP_address，根据指令输入密码（密码输入是不可见的），回车，完成。  命令行利用scp命令从服务器下载文件：scp -r ironman@10.233.177.202:home&#x2F;ironman&#x2F;xxx">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Server连接与性能查看">
+<meta property="og:url" content="https://jenniferwuu.github.io/2023/08/12/code/%E6%9C%8D%E5%8A%A1%E5%99%A8/index.html">
+<meta property="og:site_name" content="JenniferWu&#39;Blog">
+<meta property="og:description" content="什么是服务器？一直开着、性能更强、专门用来存储数据或运行服务，并通过网络响应其他电脑（客户端）请求的计算机（有 CPU、内存、硬盘和操作系统）。 连接服务器 命令行ssh连接：ssh 用户名@IP_address，根据指令输入密码（密码输入是不可见的），回车，完成。  命令行利用scp命令从服务器下载文件：scp -r ironman@10.233.177.202:home&#x2F;ironman&#x2F;xxx">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://jenniferwuu.github.io/img/wwj.jpg">
+<meta property="article:published_time" content="2023-08-11T16:11:19.000Z">
+<meta property="article:modified_time" content="2026-03-10T03:50:27.172Z">
+<meta property="article:author" content="JenniferWu">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://jenniferwuu.github.io/img/wwj.jpg"><link rel="shortcut icon" href="/img/star.png"><link rel="canonical" href="https://jenniferwuu.github.io/2023/08/12/code/%E6%9C%8D%E5%8A%A1%E5%99%A8/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: true,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Server连接与性能查看',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: undefined,
+  isToc: true,
+  postUpdate: '2026-03-10 11:50:27'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/wwj.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">31</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">6</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/default_top_img.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="JenniferWu'Blog"><span class="site-name">JenniferWu'Blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Server连接与性能查看</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2023-08-11T16:11:19.000Z" title="Created 2023-08-12 00:11:19">2023-08-12</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2026-03-10T03:50:27.172Z" title="Updated 2026-03-10 11:50:27">2026-03-10</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/linux/">linux</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Server连接与性能查看"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>什么是服务器？一直开着、性能更强、专门用来存储数据或运行服务，并通过网络响应其他电脑（客户端）请求的计算机（有 CPU、内存、硬盘和操作系统）。</p>
+<h1 id="连接服务器"><a href="#连接服务器" class="headerlink" title="连接服务器"></a>连接服务器</h1><ol>
+<li><p><strong><u>命令行ssh连接</u></strong>：<code>ssh 用户名@IP_address</code>，根据指令输入密码（密码输入是不可见的），回车，完成。</p>
+</li>
+<li><p><strong><u>命令行利用scp命令从服务器下载文件</u></strong>：<code>scp -r ironman@10.233.177.202:home/ironman/xxx/    /home/myname/xxx/</code></p>
+</li>
+<li><p><strong><u>终端软件</u></strong></p>
+<ul>
+<li><p>Xshell + Xftp</p>
+</li>
+<li><p>MobaXterm</p>
+<ul>
+<li>可以split分屏</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li><p>FileZilla【文件 - 站点管理器】</p>
+<p><img src="/2023/08/12/code/%E6%9C%8D%E5%8A%A1%E5%99%A8/filezilla.png" alt="filezilla"></p>
+</li>
+</ul>
+<h1 id="查看Linux-服务器配置"><a href="#查看Linux-服务器配置" class="headerlink" title="查看Linux 服务器配置"></a>查看Linux 服务器配置</h1><h2 id="基础信息"><a href="#基础信息" class="headerlink" title="基础信息"></a>基础信息</h2><p><strong>查看操作系统版本</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">shaojunjie@a100:~$ <span class="built_in">cat</span> /etc/os-release</span><br><span class="line">NAME=<span class="string">&quot;Ubuntu&quot;</span></span><br><span class="line">VERSION=<span class="string">&quot;16.04.7 LTS (Xenial Xerus)&quot;</span></span><br><span class="line">ID=ubuntu</span><br><span class="line">ID_LIKE=debian</span><br><span class="line">PRETTY_NAME=<span class="string">&quot;Ubuntu 16.04.7 LTS&quot;</span></span><br><span class="line">VERSION_ID=<span class="string">&quot;16.04&quot;</span></span><br><span class="line">HOME_URL=<span class="string">&quot;http://www.ubuntu.com/&quot;</span></span><br><span class="line">SUPPORT_URL=<span class="string">&quot;http://help.ubuntu.com/&quot;</span></span><br><span class="line">BUG_REPORT_URL=<span class="string">&quot;http://bugs.launchpad.net/ubuntu/&quot;</span></span><br><span class="line">VERSION_CODENAME=xenial</span><br><span class="line">UBUNTU_CODENAME=xenial</span><br></pre></td></tr></table></figure>
+<p><strong>查看Linux系统的内核版本与架构信息</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">shaojunjie@a100:~$ <span class="built_in">uname</span> -a</span><br><span class="line">Linux a100 4.15.0-142-generic <span class="comment">#146~16.04.1-Ubuntu SMP Tue Apr 13 09:27:15 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux</span></span><br></pre></td></tr></table></figure>
+<p><strong>查看主机名</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">shaojunjie@a100:~$ hostname</span><br><span class="line">a100</span><br></pre></td></tr></table></figure>
+<h2 id="CPU"><a href="#CPU" class="headerlink" title="CPU"></a>CPU</h2><p><strong>查看 CPU 型号、核心数、线程数</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">(dif) shaojunjie@a100:/home/data4/shaojunjie/diffusers$ lscpu</span><br><span class="line">Architecture:          x86_64</span><br><span class="line">CPU 运行模式：    32-bit, 64-bit</span><br><span class="line">Byte Order:            Little Endian</span><br><span class="line">CPU(s):                128</span><br><span class="line">On-line CPU(s) list:   0-127</span><br><span class="line">每个核的线程数：2</span><br><span class="line">每个座的核数：  32</span><br><span class="line">Socket(s):             2</span><br><span class="line">NUMA 节点：         2</span><br><span class="line">厂商 ID：           GenuineIntel</span><br><span class="line">CPU 系列：          6</span><br><span class="line">型号：              106</span><br><span class="line">Model name:            Intel(R) Xeon(R) Platinum 8358 CPU @ 2.60GHz</span><br><span class="line">步进：              6</span><br><span class="line">CPU MHz：             800.000</span><br><span class="line">CPU max MHz:           3400.0000</span><br><span class="line">CPU min MHz:           800.0000</span><br><span class="line">BogoMIPS:              5201.89</span><br><span class="line">虚拟化：           VT-x</span><br><span class="line">L1d 缓存：          48K</span><br><span class="line">L1i 缓存：          32K</span><br><span class="line">L2 缓存：           1280K</span><br><span class="line">L3 缓存：           49152K</span><br><span class="line">NUMA node0 CPU(s):     0-31,64-95</span><br><span class="line">NUMA node1 CPU(s):     32-63,96-127</span><br><span class="line">Flags:                 fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc art arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc cpuid aperfmperf pni pclmulqdq dtes64 ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm 3dnowprefetch cpuid_fault epb cat_l3 invpcid_single ssbd mba ibrs ibpb stibp ibrs_enhanced tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid cqm rdt_a avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb intel_pt avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves cqm_llc cqm_occup_llc cqm_mbm_total cqm_mbm_local dtherm ida arat pln pts avx512vbmi umip pku ospke avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg tme avx512_vpopcntdq la57 rdpid md_clear pconfig flush_l1d arch_capabilities</span><br></pre></td></tr></table></figure>
+<h2 id="内存（RAM"><a href="#内存（RAM" class="headerlink" title="内存（RAM)"></a>内存（RAM)</h2><p><strong>查看内存总量和使用情况</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(dif) shaojunjie@a100:/home/data4/shaojunjie/diffusers$ free -h</span><br><span class="line">              total        used        free      shared  buff/cache   available</span><br><span class="line">Mem:           1.0T        8.4G         77G         21G        921G        970G</span><br><span class="line">Swap:          976M        301M        675M</span><br></pre></td></tr></table></figure>
+<h2 id="硬盘-存储"><a href="#硬盘-存储" class="headerlink" title="硬盘/存储"></a>硬盘/存储</h2><p><strong>查看磁盘分区和使用情况</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">(dif) shaojunjie@a100:/home/data4/shaojunjie/diffusers$ df -h</span><br><span class="line">文件系统                                            容量  已用  可用 已用% 挂载点</span><br><span class="line">udev                                                504G     0  504G    0% /dev</span><br><span class="line">tmpfs                                               101G  436M  101G    1% /run</span><br><span class="line">/dev/sda2                                           439G  402G   15G   97% /</span><br><span class="line">tmpfs                                               504G   22G  483G    5% /dev/shm</span><br><span class="line">tmpfs                                               5.0M     0  5.0M    0% /run/lock</span><br><span class="line">tmpfs                                               504G     0  504G    0% /sys/fs/cgroup</span><br><span class="line">/dev/sdc                                            2.2T  1.7T  394G   82% /home/data3d</span><br><span class="line">/dev/sdd                                             11T  8.9T  1.1T   90% /home/data4</span><br><span class="line">/dev/sdb1                                           2.2T  1.9T  193G   91% /home/disk_data/demo</span><br><span class="line">/dev/sda1                                           511M  3.7M  508M    1% /boot/efi</span><br><span class="line">tmpfs                                               101G   24K  101G    1% /run/user/108</span><br><span class="line">tmpfs                                               101G  8.0K  101G    1% /run/user/1018</span><br><span class="line">tmpfs                                               101G     0  101G    0% /run/user/1016</span><br><span class="line">//10.114.93.218/ALG_MV2DAI_TEMP/定位类/loc_and_det  523T  386T  137T   74% /mnt/loc_and_det</span><br><span class="line">tmpfs                                               101G     0  101G    0% /run/user/1020</span><br><span class="line">tmpfs                                               101G     0  101G    0% /run/user/1011</span><br></pre></td></tr></table></figure>
+<p><strong>查看物理磁盘（硬盘型号）</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">shaojunjie@a100:~$ lsblk</span><br><span class="line">NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT</span><br><span class="line">sdd      8:48   0  10.5T  0 disk /home/data4</span><br><span class="line">sdb      8:16   0   2.2T  0 disk</span><br><span class="line">└─sdb1   8:17   0   2.2T  0 part /home/disk_data/demo</span><br><span class="line">sdc      8:32   0   2.2T  0 disk /home/data3d</span><br><span class="line">sda      8:0    0 446.6G  0 disk</span><br><span class="line">├─sda2   8:2    0 445.2G  0 part /</span><br><span class="line">├─sda3   8:3    0   977M  0 part [SWAP]</span><br><span class="line">└─sda1   8:1    0   512M  0 part /boot/efi</span><br></pre></td></tr></table></figure>
+<p><strong>查看内存虚拟盘</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">shaojunjie@a100:~$ <span class="built_in">df</span> -h | grep tmpfs</span><br><span class="line">tmpfs                                               101G  444M  101G    1% /run</span><br><span class="line">tmpfs                                               504G   22G  483G    5% /dev/shm</span><br><span class="line">tmpfs                                               5.0M     0  5.0M    0% /run/lock</span><br><span class="line">tmpfs                                               504G     0  504G    0% /sys/fs/cgroup</span><br><span class="line">tmpfs                                               101G   24K  101G    1% /run/user/108</span><br><span class="line">tmpfs                                               101G  8.0K  101G    1% /run/user/1018</span><br><span class="line">tmpfs                                               101G     0  101G    0% /run/user/1016</span><br><span class="line">tmpfs                                               101G     0  101G    0% /run/user/1020</span><br><span class="line">tmpfs                                               101G     0  101G    0% /run/user/1011</span><br></pre></td></tr></table></figure>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>挂载点(<strong>这个设备在 Linux 文件树中的“入口地址”</strong>)</th>
+<th>设备(<strong>物理/虚拟存储硬件的“身份证”</strong>)</th>
+<th>容量</th>
+<th>已用</th>
+<th>可用</th>
+<th>类型</th>
+<th>读写速度</th>
+<th>用途建议</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>/</code></strong></td>
+<td><code>/dev/sda2</code></td>
+<td>439G</td>
+<td>402G (<strong>97%</strong>)</td>
+<td>15G</td>
+<td><strong>系统盘（推测 SATA SSD）</strong></td>
+<td>~500 MB/s</td>
+<td>❌ <strong>严重警告！系统盘快满了</strong></td>
+</tr>
+<tr>
+<td><strong><code>/home/data4</code></strong></td>
+<td><code>/dev/sdd</code></td>
+<td><strong>11 TB</strong></td>
+<td>8.9T (90%)</td>
+<td>1.1T</td>
+<td><strong>大容量数据盘（推测 HDD RAID）</strong></td>
+<td>~200 MB/s</td>
+<td>✅ 主数据集/模型仓库</td>
+</tr>
+<tr>
+<td><strong><code>/home/data3d</code></strong></td>
+<td><code>/dev/sdc</code></td>
+<td>2.2T</td>
+<td>1.7T (82%)</td>
+<td>394G</td>
+<td>中速数据盘（SSD/HDD）</td>
+<td>~500 MB/s</td>
+<td>✅ 次常用数据</td>
+</tr>
+<tr>
+<td><strong><code>/home/disk_data/demo</code></strong></td>
+<td><code>/dev/sdb1</code></td>
+<td>2.2T</td>
+<td>1.9T (91%)</td>
+<td>193G</td>
+<td>同上</td>
+<td>~500 MB/s</td>
+<td>⚠️ 几乎满</td>
+</tr>
+<tr>
+<td><strong><code>/mnt/loc_and_det</code></strong></td>
+<td><code>//10.114...</code></td>
+<td><strong>523 TB</strong></td>
+<td>386T (74%)</td>
+<td>137T</td>
+<td><strong>网络存储（SMB/NFS）</strong></td>
+<td>~50–100 MB/s</td>
+<td>✅ 冷数据/共享数据集</td>
+</tr>
+<tr>
+<td><strong><code>/dev/shm</code></strong></td>
+<td><code>tmpfs</code></td>
+<td>504G</td>
+<td>22G (5%)</td>
+<td>483G</td>
+<td><strong>内存虚拟盘</strong></td>
+<td><strong>~50+ GB/s</strong></td>
+<td>✅ 临时加速（关键！）</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="GPU-amp-CUDA"><a href="#GPU-amp-CUDA" class="headerlink" title="GPU &amp; CUDA"></a><strong>GPU &amp; CUDA</strong></h2><p><strong>是否有 NVIDIA GPU？</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">(dif) shaojunjie@a100:/home/data4/shaojunjie/diffusers$ lspci | grep -i nvidia</span><br><span class="line">10:00.0 3D controller: NVIDIA Corporation Device 20b2 (rev a1)</span><br><span class="line">16:00.0 3D controller: NVIDIA Corporation Device 20b2 (rev a1)</span><br><span class="line">49:00.0 3D controller: NVIDIA Corporation Device 20b2 (rev a1)</span><br><span class="line">4d:00.0 3D controller: NVIDIA Corporation Device 20b2 (rev a1)</span><br><span class="line">54:00.0 Bridge: NVIDIA Corporation Device 1af1 (rev a1)</span><br><span class="line">55:00.0 Bridge: NVIDIA Corporation Device 1af1 (rev a1)</span><br><span class="line">56:00.0 Bridge: NVIDIA Corporation Device 1af1 (rev a1)</span><br><span class="line">57:00.0 Bridge: NVIDIA Corporation Device 1af1 (rev a1)</span><br><span class="line">58:00.0 Bridge: NVIDIA Corporation Device 1af1 (rev a1)</span><br><span class="line">59:00.0 Bridge: NVIDIA Corporation Device 1af1 (rev a1)</span><br><span class="line">8a:00.0 3D controller: NVIDIA Corporation Device 20b2 (rev a1)</span><br><span class="line">8f:00.0 3D controller: NVIDIA Corporation Device 20b2 (rev a1)</span><br><span class="line">c6:00.0 3D controller: NVIDIA Corporation Device 20b2 (rev a1)</span><br></pre></td></tr></table></figure>
+<p><strong>GPU 详细型号 + 驱动版本</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">shaojunjie@a100:~$ nvidia-smi</span><br><span class="line">Tue Dec 23 00:05:01 2025</span><br><span class="line">+-----------------------------------------------------------------------------+</span><br><span class="line">| NVIDIA-SMI 525.125.06   Driver Version: 525.125.06   CUDA Version: 12.0     |</span><br><span class="line">|-------------------------------+----------------------+----------------------+</span><br><span class="line">| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |</span><br><span class="line">| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |</span><br><span class="line">|                               |                      |               MIG M. |</span><br><span class="line">|===============================+======================+======================|</span><br><span class="line">|   0  NVIDIA A100-SXM...  Off  | 00000000:10:00.0 Off |                    0 |</span><br><span class="line">| N/A   66C    P0   413W / 400W |  61712MiB / 81920MiB |    100%      Default |</span><br><span class="line">|                               |                      |             Disabled |</span><br><span class="line">+-------------------------------+----------------------+----------------------+</span><br><span class="line">|   1  NVIDIA A100-SXM...  Off  | 00000000:16:00.0 Off |                    0 |</span><br><span class="line">| N/A   34C    P0    64W / 400W |      2MiB / 81920MiB |      0%      Default |</span><br><span class="line">|                               |                      |             Disabled |</span><br><span class="line">+-------------------------------+----------------------+----------------------+</span><br><span class="line">|   2  NVIDIA A100-SXM...  Off  | 00000000:49:00.0 Off |                    0 |</span><br><span class="line">| N/A   34C    P0    62W / 400W |      2MiB / 81920MiB |      0%      Default |</span><br><span class="line">|                               |                      |             Disabled |</span><br><span class="line">+-------------------------------+----------------------+----------------------+</span><br><span class="line">|   3  NVIDIA A100-SXM...  Off  | 00000000:4D:00.0 Off |                    0 |</span><br><span class="line">| N/A   33C    P0    61W / 400W |      2MiB / 81920MiB |      0%      Default |</span><br><span class="line">|                               |                      |             Disabled |</span><br><span class="line">+-------------------------------+----------------------+----------------------+</span><br><span class="line">|   4  NVIDIA A100-SXM...  Off  | 00000000:8A:00.0 Off |                    0 |</span><br><span class="line">| N/A   33C    P0    63W / 400W |      2MiB / 81920MiB |      0%      Default |</span><br><span class="line">|                               |                      |             Disabled |</span><br><span class="line">+-------------------------------+----------------------+----------------------+</span><br><span class="line">|   5  NVIDIA A100-SXM...  Off  | 00000000:8F:00.0 Off |                    0 |</span><br><span class="line">| N/A   33C    P0    64W / 400W |      2MiB / 81920MiB |      0%      Default |</span><br><span class="line">|                               |                      |             Disabled |</span><br><span class="line">+-------------------------------+----------------------+----------------------+</span><br><span class="line">|   6  NVIDIA A100-SXM...  Off  | 00000000:C6:00.0 Off |                    0 |</span><br><span class="line">| N/A   33C    P0    62W / 400W |      2MiB / 81920MiB |      0%      Default |</span><br><span class="line">|                               |                      |             Disabled |</span><br><span class="line">+-------------------------------+----------------------+----------------------+</span><br><span class="line"></span><br><span class="line">+-----------------------------------------------------------------------------+</span><br><span class="line">| Processes:                                                                  |</span><br><span class="line">|  GPU   GI   CI        PID   Type   Process name                  GPU Memory |</span><br><span class="line">|        ID   ID                                                   Usage      |</span><br><span class="line">|=============================================================================|</span><br><span class="line">|    0   N/A  N/A     16191      C   python                          61710MiB |</span><br><span class="line">+-----------------------------------------------------------------------------+</span><br></pre></td></tr></table></figure>
+<h2 id="CUDA-Toolkit"><a href="#CUDA-Toolkit" class="headerlink" title="CUDA Toolkit"></a>CUDA Toolkit</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 查看 nvcc（CUDA 编译器）版本 → 说明安装了 CUDA Toolkit</span><br><span class="line">nvcc --version</span><br><span class="line"></span><br><span class="line">没有</span><br></pre></td></tr></table></figure>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="https://jenniferwuu.github.io">JenniferWu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://jenniferwuu.github.io/2023/08/12/code/%E6%9C%8D%E5%8A%A1%E5%99%A8/">https://jenniferwuu.github.io/2023/08/12/code/%E6%9C%8D%E5%8A%A1%E5%99%A8/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="/img/wwj.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/08/06/code/LinuxBasic/" title="Linux基础"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">Linux基础</div></div></a></div><div class="next-post pull-right"><a href="/2023/08/12/others/%E8%BF%99%E4%B8%AAAPP%E4%B8%8D%E9%94%99/" title="这个APP不错"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">这个APP不错</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/wwj.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">JenniferWu</div><div class="author-info__description">松花酿酒，春水煎茶</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">31</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">6</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/JenniferWuu" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:dndxwwj@outlook.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%9E%E6%8E%A5%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-number">1.</span> <span class="toc-text">连接服务器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8BLinux-%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE"><span class="toc-number">2.</span> <span class="toc-text">查看Linux 服务器配置</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E4%BF%A1%E6%81%AF"><span class="toc-number">2.1.</span> <span class="toc-text">基础信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CPU"><span class="toc-number">2.2.</span> <span class="toc-text">CPU</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E5%AD%98%EF%BC%88RAM"><span class="toc-number">2.3.</span> <span class="toc-text">内存（RAM)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A1%AC%E7%9B%98-%E5%AD%98%E5%82%A8"><span class="toc-number">2.4.</span> <span class="toc-text">硬盘&#x2F;存储</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GPU-amp-CUDA"><span class="toc-number">2.5.</span> <span class="toc-text">GPU &amp; CUDA</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CUDA-Toolkit"><span class="toc-number">2.6.</span> <span class="toc-text">CUDA Toolkit</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/03/03/knowledge/Parameter_Efficient_Fine-Tuning/" title="Parameter efficient fine-tuning">Parameter efficient fine-tuning</a><time datetime="2026-03-03T08:20:05.000Z" title="Created 2026-03-03 16:20:05">2026-03-03</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/02/10/code/modelDeployment/" title="模型部署">模型部署</a><time datetime="2026-02-10T02:16:44.000Z" title="Created 2026-02-10 10:16:44">2026-02-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/01/24/code/TrainingTrick/" title="深度学习训练技巧">深度学习训练技巧</a><time datetime="2026-01-24T07:52:04.000Z" title="Created 2026-01-24 15:52:04">2026-01-24</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/01/06/knowledge/Diffusers/" title="Diffusers">Diffusers</a><time datetime="2026-01-06T07:57:06.000Z" title="Created 2026-01-06 15:57:06">2026-01-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/01/06/code/BashUse/" title="在终端运行代码">在终端运行代码</a><time datetime="2026-01-06T07:55:54.000Z" title="Created 2026-01-06 15:55:54">2026-01-06</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2026 By JenniferWu</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, '']
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script><script>(() => {
+  const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaid.length === 0) return
+  const runMermaid = () => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+    Array.from($mermaid).forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+      const mermaidID = 'mermaid-' + index
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+
+      const renderV10 = () => {
+        renderFn.then(({svg}) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svg)
+        })
+      }
+
+      const renderV9 = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      typeof renderFn === 'string' ? renderV9(renderFn) : renderV10()
+    })
+  }
+
+  const loadMermaid = () => {
+    window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+  }
+
+  btf.addModeChange('mermaid', runMermaid)
+
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
